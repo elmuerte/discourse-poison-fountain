@@ -1,0 +1,15 @@
+discourse_poison_fountain:
+  poison_fountain_enabled:
+    default: false
+  poison_fountain_source:
+    default: https://rnsaffn.com/poison2/
+  poison_fountain_update_robots_txt:
+    default: true
+  poison_fountain_cache_hours:
+    default: 6
+  poison_fountain_entries:
+    # number of entries to keep around
+    default: 10
+  poison_fountain_link_count:
+    # number of links to include on pages
+    default: 1
