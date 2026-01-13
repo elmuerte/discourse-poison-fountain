@@ -1,0 +1,20 @@
+# frozen_string_literal: true
+
+# This Gemfile is to be used in combination with Ruby LSP.
+# Configure rubyLsp.bundleGemfile to use this file.
+#
+# This Gemfile will include the Discourse' Gemfile, but also depends on a
+# gemspec file defining the Discourse root directory as a gem. This way
+# Ruby LSP indexes the Discourse code too and it will be available for
+# IntelliSense.
+
+source "https://rubygems.org"
+
+eval_gemfile(File.expand_path("../../Gemfile", __dir__))
+
+gemspec name: "discourse", path: "../../", require: false
+
+group :development do
+  gem "ruby-lsp-rspec", require: false
+  gem "debug", require: false, platforms: :mri
+end

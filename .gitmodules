@@ -1,0 +1,3 @@
+[submodule "vendor/discourse-plugin-bin-rspec"]
+	path = vendor/discourse-plugin-bin-rspec
+	url = https://github.com/magicball-network/discourse-plugin-bin-rspec

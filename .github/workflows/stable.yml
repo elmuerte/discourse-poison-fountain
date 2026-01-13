@@ -1,0 +1,13 @@
+name: Discourse stable
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  ci:
+    uses: discourse/.github/.github/workflows/discourse-plugin.yml@v1
+    with:
+      core_ref: stable
