@@ -25,4 +25,16 @@ RSpec.describe DiscoursePoisonFountain::RobotsTxtService do
       ]
     )
   end
+
+  it "do nothing when disabled" do
+    SiteSetting.poison_fountain_update_robots_txt = false
+
+    robots_info = { agents: [{ name: "*", disallow: %w[/admin/ /auth/] }] }
+
+    described_class.on_robots_info(robots_info)
+
+    expect(robots_info[:agents]).to eq(
+      [{ name: "*", disallow: %w[/admin/ /auth/] }]
+    )
+  end
 end
