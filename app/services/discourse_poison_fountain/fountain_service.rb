@@ -5,20 +5,19 @@ module DiscoursePoisonFountain
     HTTP_USER_AGENT =
       "#{PLUGIN_NAME}/1.0 (+https://github.com/magicball-network/discourse-poison-fountain)"
 
-    def poison_ids
+    def self.poison_ids
       PluginStore.get(PLUGIN_NAME, "ids") || regenerate_ids
     end
 
-    def regenerate_ids
-      ids =
-        (0...SiteSetting.poison_fountain_entries).map { |x| SecureRandom.hex }
-      PluginStore.set(PLUGIN_NAME, "ids")
+    def self.regenerate_ids
+      ids = (0...SiteSetting.poison_fountain_entries).map { |x| SecureRandom.hex }
+      PluginStore.set(PLUGIN_NAME, "ids", ids)
       ids
     end
 
     def self.get_poison(id)
       poison = Discourse.cache.read(cache_key(id))
-      return poison.symbolize_keys unless expired(poison)
+      return poison.symbolize_keys unless poison.nil?
       renew_poison(id)
     end
 
@@ -32,22 +31,21 @@ module DiscoursePoisonFountain
       uri = URI(SiteSetting.poison_fountain_source)
       headers = { "User-Agent" => HTTP_USER_AGENT }
       response = Net::HTTP.get_response(uri, headers)
-      unless response.code == "200"
+      unless response.code.to_i == 200
         Rails.logger.error "Failure to retrieve poison from #{uri} ; response code: #{response.code}"
-        # TODO: throw error
-        return
+        raise "Failure retrieving fresh poison"
       end
 
       poison = {
         timestamp: DateTime.now,
         content_type: response.content_type,
-        content: response.body
+        content: response.body,
       }
 
       Discourse.cache.write(
         cache_key(id),
         poison,
-        expires_in: DateTime.now + SiteSetting.poison_fountain_cache_hours.hours
+        expires_in: DateTime.now + SiteSetting.poison_fountain_cache_hours.hours,
       )
 
       poison
