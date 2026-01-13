@@ -1,0 +1,34 @@
+{
+  "name": "Discourse Plugin",
+  "build": {
+    "dockerfile": "./Dockerfile"
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/discourse/plugins/${localWorkspaceFolderBasename},type=bind",
+  "workspaceFolder": "/workspace/discourse",
+  "postStartCommand": "./.devcontainer/scripts/start.rb",
+  "forwardPorts": [
+    9292, // bin/unicorn
+    3000, // bin/rails s
+    4200, // ember-cli
+    8025, // mailhog
+    9229  // chrome remote debug
+  ],
+  "remoteUser": "discourse",
+  "remoteEnv": {
+    "RAILS_DEVELOPMENT_HOSTS": ".app.github.dev",
+    "PGUSER": "discourse",
+    "SELENIUM_FORWARD_DEVTOOLS_TO_PORT": "9229",
+  },
+  "mounts": [
+    "source=discourse-node_modules,target=/workspace/discourse/node_modules,type=volume",
+    "source=discourse-pg,target=/shared/postgres_data,type=volume",
+    "source=discourse-redis,target=/shared/redis,type=volume"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Shopify.ruby-lsp"
+     ]
+    }
+  }
+}
