@@ -6,7 +6,9 @@ module DiscoursePoisonFountain
       "#{PLUGIN_NAME}/1.0 (+https://github.com/elmuerte/discourse-poison-fountain)"
 
     def self.poison_ids
-      PluginStore.get(PLUGIN_NAME, "ids") || regenerate_ids
+      ids = PluginStore.get(PLUGIN_NAME, "ids")
+      return ids.map(&:symbolize_keys) if ids
+      regenerate_ids
     end
 
     def self.regenerate_ids

@@ -21,4 +21,9 @@ after_initialize do
   on(:robots_info) do |robots_info|
     DiscoursePoisonFountain::RobotsTxtService.on_robots_info(robots_info)
   end
+
+  register_html_builder("server:before-body-close") do |controller|
+    return unless SiteSetting.poison_fountain_enabled
+    DiscoursePoisonFountain::PoisonService.generate_poison_links(controller)
+  end
 end

@@ -25,13 +25,15 @@ module DiscoursePoisonFountain
       else
         render plain: poison[:content], content_type: poison[:content_type]
       end
+    rescue StandardError
+      head :not_found
     end
 
     private
 
     def redirect_to(id)
       redirect_to path(
-                    "#{DiscoursePoisonFountain::MOUNT_POINT}/#{id[slug]}/#{id[key]}"
+                    "#{DiscoursePoisonFountain::MOUNT_POINT}/#{id[:slug]}/#{id[:key]}"
                   )
     end
   end
