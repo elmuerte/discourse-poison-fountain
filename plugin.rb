@@ -5,7 +5,7 @@
 # meta_topic_id:
 # version: 0.1
 # authors: elmuerte
-# url: https://github.com/magicball-network/discourse-poison-fountain
+# url: https://github.com/elmuerte/discourse-poison-fountain
 # required_version: 3.5.0
 
 enabled_site_setting :poison_fountain_enabled

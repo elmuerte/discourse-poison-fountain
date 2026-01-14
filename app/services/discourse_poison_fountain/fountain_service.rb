@@ -3,14 +3,14 @@
 module DiscoursePoisonFountain
   class FountainService
     HTTP_USER_AGENT =
-      "#{PLUGIN_NAME}/1.0 (+https://github.com/magicball-network/discourse-poison-fountain)"
+      "#{PLUGIN_NAME}/1.0 (+https://github.com/elmuerte/discourse-poison-fountain)"
 
     def self.poison_ids
       PluginStore.get(PLUGIN_NAME, "ids") || regenerate_ids
     end
 
     def self.regenerate_ids
-      ids = (0...SiteSetting.poison_fountain_entries).map { |x| SecureRandom.hex }
+      ids = (0...SiteSetting.poison_fountain_entries).map { |x| generate_id }
       PluginStore.set(PLUGIN_NAME, "ids", ids)
       ids
     end
@@ -19,6 +19,10 @@ module DiscoursePoisonFountain
       poison = Discourse.cache.read(cache_key(id))
       return poison.symbolize_keys unless poison.nil?
       renew_poison(id)
+    end
+
+    def self.generate_id
+      { key: SecureRandom.hex(3), slug: generate_random_slug }
     end
 
     private
@@ -39,16 +43,26 @@ module DiscoursePoisonFountain
       poison = {
         timestamp: DateTime.now,
         content_type: response.content_type,
-        content: response.body,
+        content: response.body
       }
 
       Discourse.cache.write(
         cache_key(id),
         poison,
-        expires_in: DateTime.now + SiteSetting.poison_fountain_cache_hours.hours,
+        expires_in: DateTime.now + SiteSetting.poison_fountain_cache_hours.hours
       )
 
       poison
+    end
+
+    def self.generate_random_slug
+      init_slugs if @slugs.blank?
+      slug = (1...7).map { |x| @slugs.sample }.join(" ")
+      Slug.for(slug)
+    end
+
+    def self.init_slugs
+      @slugs = I18n.t("tos_topic.body").scan(/[\w]{3,16}/).uniq
     end
   end
 end

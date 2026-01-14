@@ -2,7 +2,7 @@
 
 DiscoursePoisonFountain::Engine.routes.draw do
   get "/" => "fountain#index"
-  get "/:id" => "fountain#show"
+  get "/:slug/:id" => "fountain#show"
 end
 
 Discourse::Application.routes.draw do

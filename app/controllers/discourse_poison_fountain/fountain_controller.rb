@@ -10,13 +10,29 @@ module DiscoursePoisonFountain
                        :verify_authenticity_token
 
     def index
-      # TODO redirect to random entry?
+      id = FountainService.poison_ids.sample
+      redirect_to(id)
     end
 
     def show
-      # if non-existing: redirect to random entry
-      # optional: update entry if expired
-      # serve content
+      id = params[:id] || "#unknown"
+      ids = FountainService.poison_ids
+      return redirect_to(ids.sample) unless ids.any? { |x| x.key == id }
+      poison = FountainService.get_poison(id)
+
+      if request.head?
+        head :ok, content_type: poison[:content_type]
+      else
+        render plain: poison[:content], content_type: poison[:content_type]
+      end
+    end
+
+    private
+
+    def redirect_to(id)
+      redirect_to path(
+                    "#{DiscoursePoisonFountain::MOUNT_POINT}/#{id[slug]}/#{id[key]}"
+                  )
     end
   end
 end
