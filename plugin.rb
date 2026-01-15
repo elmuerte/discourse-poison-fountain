@@ -22,6 +22,12 @@ after_initialize do
     DiscoursePoisonFountain::RobotsTxtService.on_robots_info(robots_info)
   end
 
+  on(:site_setting_changed) do |name, old_val, new_val|
+    if name == :poison_fountain_entries
+      DiscoursePoisonFountain::FountainService.regenerate_ids
+    end
+  end
+
   register_html_builder("server:before-body-close") do |controller|
     return unless SiteSetting.poison_fountain_enabled
     DiscoursePoisonFountain::PoisonService.generate_poison_links(controller)

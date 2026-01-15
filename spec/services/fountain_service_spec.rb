@@ -12,6 +12,14 @@ RSpec.describe DiscoursePoisonFountain::FountainService do
       actual_ids = described_class.poison_ids
       expect(actual_ids).to eq(expected_ids)
     end
+
+    it "generates new entries when the config changes" do
+      SiteSetting.poison_fountain_entries = 7
+      described_class.regenerate_ids
+      SiteSetting.poison_fountain_entries = 13
+      ids = described_class.regenerate_ids
+      expect(ids.length).to eq(13)
+    end
   end
 
   it "returns poison which is cached" do
