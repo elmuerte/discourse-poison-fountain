@@ -10,10 +10,8 @@ discourse_poison_fountain:
     min: 1
     max: 24
   poison_fountain_entries:
-    # number of entries to keep around
     default: 10
     min: 1
   poison_fountain_link_count:
-    # number of links to include on pages
     default: 1
     min: 1

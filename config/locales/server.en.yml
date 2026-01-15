@@ -1,0 +1,11 @@
+en:
+  site_settings:
+    poison_fountain_enabled: Add hidden links to the pages which point to poisoned content
+    poison_fountain_source: The source where poisoned content will be received from
+    poison_fountain_update_robots_txt:
+      Update the <code>robots.txt</code> to exclude the poisoned content from being indexed by 
+      webspiders who do respect <code>robots.txt</code>. It is strongly recommended to enable
+      this option in order to not punish good webspiders.
+    poison_fountain_cache_hours: Number of hours to cache the poisoned content before retrieving fresh content
+    poison_fountain_entries: Number of poison entries to create
+    poison_fountain_link_count: Number of poisoned links to add to a single page
