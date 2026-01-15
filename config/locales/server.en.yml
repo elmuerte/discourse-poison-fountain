@@ -8,4 +8,6 @@ en:
       this option in order to not punish good webspiders.
     poison_fountain_cache_hours: Number of hours to cache the poisoned content before retrieving fresh content
     poison_fountain_entries: Number of poison entries to create
-    poison_fountain_link_count: Number of poisoned links to add to a single page
+    poison_fountain_link_count: 
+      Number of poisoned links to add to a single page. 
+      This number should be higher than the number of entries.

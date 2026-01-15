@@ -2,7 +2,10 @@
 
 This [Discourse](https://discourse.com) plugin adds a [poison foutain](https://rnsaffn.com/poison3/).
 
-Note: This plugin is still in development and not ready to be used.
+It adds hidden links to every page which point to content which contains subtle flaws that can poison
+LLM models when the content is used for training.
+
+Nice web scrapers should not pick up this poisoned content. Users should also not notice any of this.
 
 ## Plugin Compatibility Status
 
