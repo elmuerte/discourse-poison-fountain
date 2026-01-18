@@ -9,16 +9,8 @@ module DiscoursePoisonFountain
         FountainService.poison_ids.sample(
           SiteSetting.poison_fountain_link_count
         )
-      links =
-        poison
-          .map do |entry|
-            uri =
-              controller.path(
-                "#{DiscoursePoisonFountain::MOUNT_POINT}/#{entry[:slug]}/#{entry[:key]}"
-              )
-            "<a href=\"#{uri}\" rel=\"nofollow\">#{entry[:slug].gsub("-", " ")}</a>"
-          end
-          .join(" ")
+
+      links = poison.map { |entry| generate_link(controller, entry) }.join(" ")
 
       "
       <div
@@ -29,6 +21,14 @@ module DiscoursePoisonFountain
         #{links}
       </div>
       "
+    end
+
+    def self.generate_link(controller, entry)
+      uri =
+        controller.path(
+          "#{DiscoursePoisonFountain::MOUNT_POINT}/#{entry[:slug]}/#{entry[:key]}"
+        )
+      "<a href=\"#{uri}\" rel=\"nofollow\">#{entry[:slug].gsub("-", " ")}</a>"
     end
   end
 end

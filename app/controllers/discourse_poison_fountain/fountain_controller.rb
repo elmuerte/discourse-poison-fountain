@@ -10,8 +10,14 @@ module DiscoursePoisonFountain
                        :verify_authenticity_token
 
     def index
-      id = FountainService.poison_ids.sample
-      redirect_to_poison(id)
+      content = "<!doctype html><html><body><ul>"
+      FountainService.poison_ids.each do |entry|
+        content += "<li>"
+        content += PoisonService.generate_link(self, entry)
+        content += "</li>"
+      end
+      content += "</ul></body></html>"
+      render plain: content, content_type: "text/html"
     end
 
     def show
