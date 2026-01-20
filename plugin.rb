@@ -21,7 +21,7 @@ end
 require_relative "lib/discourse_poison_fountain/engine"
 
 after_initialize do
-  require_relative "app/jobs/discourse_poison_fountain/regenerate_poison"
+  require_relative "app/jobs/discourse_poison_fountain/scheduled/regenerate_poison"
 
   on(:robots_info) do |robots_info|
     DiscoursePoisonFountain::RobotsTxtService.on_robots_info(robots_info)
