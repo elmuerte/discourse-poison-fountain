@@ -3,7 +3,7 @@
 # name: discourse-poison-fountain
 # about: Poison fountain for Discourse
 # meta_topic_id:
-# version: 0.1
+# version: 1.0
 # authors: elmuerte
 # url: https://github.com/elmuerte/discourse-poison-fountain
 # required_version: 3.5.0
@@ -18,6 +18,8 @@ end
 require_relative "lib/discourse_poison_fountain/engine"
 
 after_initialize do
+  require_relative "app/jobs/discourse_poison_fountain/regenerate_poison"
+
   on(:robots_info) do |robots_info|
     DiscoursePoisonFountain::RobotsTxtService.on_robots_info(robots_info)
   end
