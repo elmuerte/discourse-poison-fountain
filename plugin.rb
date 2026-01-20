@@ -13,6 +13,9 @@ enabled_site_setting :poison_fountain_enabled
 module ::DiscoursePoisonFountain
   PLUGIN_NAME = "discourse-poison-fountain"
   MOUNT_POINT = "/dpf"
+
+  module Jobs
+  end
 end
 
 require_relative "lib/discourse_poison_fountain/engine"
