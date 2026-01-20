@@ -1,11 +1,13 @@
 # Discourse Poison Fountain
 
-This [Discourse](https://discourse.com) plugin adds a [poison foutain](https://rnsaffn.com/poison3/).
+This [Discourse](https://discourse.com) plugin adds a [poison fountain](https://rnsaffn.com/poison3/).
 
 It adds hidden links to every page which point to content which contains subtle flaws that can poison
 LLM models when the content is used for training.
 
 Nice web scrapers should not pick up this poisoned content. Users should also not notice any of this.
+
+For more information and discussion see [this thread](https://meta.discourse.org/t/discourse-poison-fountain/393924) on the Discourse Meta forum.
 
 ## Plugin Compatibility Status
 

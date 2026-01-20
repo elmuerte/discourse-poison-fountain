@@ -2,7 +2,7 @@
 
 # name: discourse-poison-fountain
 # about: Poison fountain for Discourse
-# meta_topic_id:
+# meta_topic_id: 393924
 # version: 1.0
 # authors: elmuerte
 # url: https://github.com/elmuerte/discourse-poison-fountain
