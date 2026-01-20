@@ -1,0 +1,69 @@
+name: Discourse Branch Update Check
+
+on:
+  schedule:
+    # Runs once a week
+    - cron: '34 7 * * 5'
+  workflow_dispatch:
+
+jobs:
+  check-updates:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - branch: latest
+            workflow: latest.yml
+          - branch: stable
+            workflow: stable.yml
+    steps:
+    - id: retrieve-lastrev
+      env:
+        branch: ${{ matrix.branch }}
+      run: |
+        git clone --bare --filter=blob:none --depth=1 --single-branch --branch=${branch} https://github.com/discourse/discourse disc
+        git -C disc rev-parse @ > last-revision
+        cp last-revision current-revision
+    - id: cache
+      uses: actions/cache@v4
+      with:
+        path: last-revision
+        key: uscheck-${{ matrix.branch }}-${{ hashFiles('last-revision') }}
+        restore-keys: |
+          uscheck-${{ matrix.branch }}-
+    - id: trigger-wf
+      env:
+        branch: ${{ matrix.branch }}
+        workflow: ${{ matrix.workflow }}
+        cache_hit: ${{ steps.cache.outputs.cache-hit }}
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        NEW_REV=$(cat current-revision)
+        # cache_hit is empty on initial; false when an older cache was restored
+        [ -n "${cache_hit}" ] && OLD_REV=$(cat last-revision || true)
+        ls -l current-revision last-revision
+        echo "NEW_REV=$NEW_REV"
+        echo "OLD_REV=$OLD_REV"
+        echo "cache_hit=$cache_hit"
+        if [ "$NEW_REV" != "$OLD_REV" ]; then
+          echo "Changes detected"
+          echo "🆕 Discourse branch ${branch} revision changed" >> $GITHUB_STEP_SUMMARY
+          echo >> $GITHUB_STEP_SUMMARY
+          echo "Latest commit: https://github.com/discourse/discourse/commit/${NEW_REV}" >> $GITHUB_STEP_SUMMARY
+          echo >> $GITHUB_STEP_SUMMARY
+          if [ -n "${cache_hit}" ]; then
+            echo "Changes: https://github.com/discourse/discourse/compare/${OLD_REV}...${NEW_REV}" >> $GITHUB_STEP_SUMMARY
+            echo >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "Triggering workflow: ${workflow}" >> $GITHUB_STEP_SUMMARY
+          
+          echo "$NEW_REV" > last-revision
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow}/dispatches \
+            -f "ref=${GITHUB_REF_NAME}"
+        else
+          echo "🆗 No changes in Discourse branch: ${branch}" >> $GITHUB_STEP_SUMMARY
+        fi
