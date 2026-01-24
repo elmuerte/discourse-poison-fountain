@@ -56,4 +56,67 @@ RSpec.describe DiscoursePoisonFountain::FountainService do
       "Failure retrieving fresh poison"
     )
   end
+
+  it "it forces plain text" do
+    stub_request(:get, SiteSetting.poison_fountain_source).to_return(
+      status: 200,
+      body: "<b>html content</b>",
+      headers: {
+        "Content-Type": "text/html"
+      }
+    )
+
+    poison_id = described_class.poison_ids.sample
+    poison = described_class.get_poison(poison_id)
+
+    expect(poison[:content_type]).to eq("text/plain")
+  end
+
+  it "it forwards the source content type" do
+    SiteSetting.poison_fountain_force_plain_text = false
+    stub_request(:get, SiteSetting.poison_fountain_source).to_return(
+      status: 200,
+      body: "<b>html content</b>",
+      headers: {
+        "Content-Type": "text/html"
+      }
+    )
+
+    poison_id = described_class.poison_ids.sample
+    poison = described_class.get_poison(poison_id)
+
+    expect(poison[:content_type]).to eq("text/html")
+  end
+
+  it "it only accepts textual content" do
+    SiteSetting.poison_fountain_force_plain_text = false
+    stub_request(:get, SiteSetting.poison_fountain_source).to_return(
+      status: 200,
+      body: "<b>html content</b>",
+      headers: {
+        "Content-Type": "text/markdown; charset=utf8"
+      }
+    )
+
+    poison_id = described_class.poison_ids.sample
+    poison = described_class.get_poison(poison_id)
+
+    expect(poison[:content_type]).to eq("text/markdown")
+  end
+
+  it "it rejects binary content" do
+    SiteSetting.poison_fountain_force_plain_text = false
+    stub_request(:get, SiteSetting.poison_fountain_source).to_return(
+      status: 200,
+      body: "PNG",
+      headers: {
+        "Content-Type": "image/png"
+      }
+    )
+
+    poison_id = described_class.poison_ids.sample
+    expect { described_class.get_poison(poison_id) }.to raise_error(
+      "Failure retrieving fresh textual poison"
+    )
+  end
 end

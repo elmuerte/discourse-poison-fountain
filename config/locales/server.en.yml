@@ -2,6 +2,10 @@ en:
   site_settings:
     poison_fountain_enabled: Add hidden links to the pages which point to poisoned content
     poison_fountain_source: The source where poisoned content will be received from
+    poison_fountain_textual_only: Only accept textual poison. This will prevent the poison source from providing binary content.
+    poison_fountain_force_plain_text:
+      Content served will always have the mime type <code>text/plain</code>, 
+      even when the source told it was something like HTML.
     poison_fountain_update_robots_txt:
       Update the <code>robots.txt</code> to exclude the poisoned content from being indexed by 
       webspiders who do respect <code>robots.txt</code>. It is strongly recommended to enable

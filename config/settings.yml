@@ -3,6 +3,10 @@ discourse_poison_fountain:
     default: false
   poison_fountain_source:
     default: https://rnsaffn.com/poison2/
+  poison_fountain_textual_only:
+    default: true
+  poison_fountain_force_plain_text:
+    default: true
   poison_fountain_update_robots_txt:
     default: true
   poison_fountain_cache_hours:
