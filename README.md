@@ -13,7 +13,7 @@ For more information and discussion see [this thread](https://meta.discourse.org
 
 [![Discourse latest](https://github.com/magicball-network/discourse-poison-fountain/actions/workflows/latest.yml/badge.svg)](https://github.com/magicball-network/discourse-poison-fountain/actions/workflows/latest.yml)
 
-[![Discourse stable](https://github.com/magicball-network/discourse-poison-fountain/actions/workflows/stable.yml/badge.svg)](https://github.com/magicball-network/discourse-poison-fountain/actions/workflows/stable.yml)
+[![Discourse ESR](https://github.com/magicball-network/discourse-poison-fountain/actions/workflows/esr.yml/badge.svg)](https://github.com/magicball-network/discourse-poison-fountain/actions/workflows/esr.yml)
 
 The above status is based on the plugin's executed tests against the specified Discourse branch.
 It is no definite guarantee that there no issues.

@@ -14,8 +14,8 @@ jobs:
         include:
           - branch: latest
             workflow: latest.yml
-          - branch: stable
-            workflow: stable.yml
+          - branch: esr
+            workflow: esr.yml
     steps:
     - id: retrieve-lastrev
       env:
