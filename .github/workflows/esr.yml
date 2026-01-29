@@ -1,4 +1,4 @@
-name: Discourse stable
+name: Discourse ESR
 
 on:
   push:
@@ -11,4 +11,4 @@ jobs:
   ci:
     uses: discourse/.github/.github/workflows/discourse-plugin.yml@v1
     with:
-      core_ref: stable
+      core_ref: esr
