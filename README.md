@@ -17,3 +17,8 @@ For more information and discussion see [this thread](https://meta.discourse.org
 
 The above status is based on the plugin's executed tests against the specified Discourse branch.
 It is no definite guarantee that there are no issues.
+
+# Notice
+
+This project is not affiliated with RNSAFFN. It provides an integration with their service. 
+This integration can be configured to use an other similar working service.
