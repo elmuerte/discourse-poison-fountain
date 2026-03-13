@@ -6,6 +6,9 @@ on:
     - cron: '34 7 * * 5'
   workflow_dispatch:
 
+permissions:
+  actions: write
+
 jobs:
   check-updates:
     runs-on: ubuntu-latest
